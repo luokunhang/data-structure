@@ -1,0 +1,6 @@
+[submodule "library"]
+	path = library
+	url = git@gitlab.cs.washington.edu:cse373-19au-students/library.git
+[submodule "data"]
+	path = data
+	url = git@gitlab.cs.washington.edu:cse373-19au-students/data.git
