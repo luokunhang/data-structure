@@ -98,7 +98,6 @@ public class LinkedIntList {
 
     /** Moves the first integer to the back of the list. */
     public static void firstToLast(LinkedIntList L) {
-        // TODO: your code here
         //throw new UnsupportedOperationException("Not implemented yet.");
         if (L.front != null && L.front.next != null) {
             ListNode first = L.front;
@@ -117,7 +116,6 @@ public class LinkedIntList {
      * use 'new'.
      */
     public static void extend(LinkedIntList A, LinkedIntList B) {
-        // TODO: your code here
         //throw new UnsupportedOperationException("Not implemented yet.");
         if (A.front != null) {
             ListNode last = A.front;
@@ -135,7 +133,6 @@ public class LinkedIntList {
      * of B. May NOT modify items of A or B. Use 'new'.
      */
     public static LinkedIntList concatenated(LinkedIntList A, LinkedIntList B) {
-        // TODO: your code here
         //throw new UnsupportedOperationException("Not implemented yet.");
         LinkedIntList AB = new LinkedIntList();
         ListNode back = AB.front;

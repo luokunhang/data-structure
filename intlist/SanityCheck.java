@@ -3,7 +3,6 @@ package intlist;
 import java.util.ArrayList;
 
 // Checkstyle will report an error with this line:
-import java.util.List;
 
 public class SanityCheck {
     public static void main(String[] args) {
@@ -11,7 +10,6 @@ public class SanityCheck {
         System.out.println("Java 11 or above is correctly installed: " + " ".isBlank());
 
         // The following four lines should run, but checkstyle should complain about style errors in each lines.
-        // TODO: checkstyle will flag all todos as errors
         ArrayList<String> a = new ArrayList<>();
         a.add("test"); // Deliberately long line: ............................................................................................... end
         System.out.println( !a.isEmpty());
