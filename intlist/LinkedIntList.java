@@ -99,7 +99,17 @@ public class LinkedIntList {
     /** Moves the first integer to the back of the list. */
     public static void firstToLast(LinkedIntList L) {
         // TODO: your code here
-        throw new UnsupportedOperationException("Not implemented yet.");
+        //throw new UnsupportedOperationException("Not implemented yet.");
+        if (L.front != null && L.front.next != null) {
+            ListNode first = L.front;
+            ListNode last = L.front;
+            while (last.next != null) {
+                last = last.next;
+            }
+            L.front = L.front.next;
+            last.next = first;
+            first.next = null;
+        }
     }
 
     /**
@@ -108,7 +118,16 @@ public class LinkedIntList {
      */
     public static void extend(LinkedIntList A, LinkedIntList B) {
         // TODO: your code here
-        throw new UnsupportedOperationException("Not implemented yet.");
+        //throw new UnsupportedOperationException("Not implemented yet.");
+        if (A.front != null) {
+            ListNode last = A.front;
+            while (last.next != null) {
+                last = last.next;
+            }
+            last.next = B.front;
+        } else {
+            A.front = B.front;
+        }
     }
 
     /**
@@ -117,7 +136,35 @@ public class LinkedIntList {
      */
     public static LinkedIntList concatenated(LinkedIntList A, LinkedIntList B) {
         // TODO: your code here
-        throw new UnsupportedOperationException("Not implemented yet.");
+        //throw new UnsupportedOperationException("Not implemented yet.");
+        LinkedIntList AB = new LinkedIntList();
+        ListNode back = AB.front;
+        if (A.front != null) {
+            ListNode curA = A.front;
+            AB.front = new ListNode(curA.data);
+            back = AB.front;
+            while (curA.next != null) {
+                curA = curA.next;
+                back.next = new ListNode(curA.data);
+                back = back.next;
+            }
+        }
+        if (B.front != null) {
+            ListNode curB = B.front;
+            if (back == null) {
+                AB.front = new ListNode(curB.data);
+                back = AB.front;
+            } else {
+                back.next = new ListNode(curB.data);
+                back = back.next;
+            }
+            while (curB.next != null) {
+                curB = curB.next;
+                back.next = new ListNode(curB.data);
+                back = back.next;
+            }
+        }
+        return AB;
     }
 
     // You don't need to look at or understand the methods below this comment.
