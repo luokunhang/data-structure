@@ -98,7 +98,6 @@ public class LinkedIntList {
 
     /** Moves the first integer to the back of the list. */
     public static void firstToLast(LinkedIntList L) {
-        //throw new UnsupportedOperationException("Not implemented yet.");
         if (L.front != null && L.front.next != null) {
             ListNode first = L.front;
             ListNode last = L.front;
@@ -116,7 +115,6 @@ public class LinkedIntList {
      * use 'new'.
      */
     public static void extend(LinkedIntList A, LinkedIntList B) {
-        //throw new UnsupportedOperationException("Not implemented yet.");
         if (A.front != null) {
             ListNode last = A.front;
             while (last.next != null) {
@@ -133,13 +131,12 @@ public class LinkedIntList {
      * of B. May NOT modify items of A or B. Use 'new'.
      */
     public static LinkedIntList concatenated(LinkedIntList A, LinkedIntList B) {
-        //throw new UnsupportedOperationException("Not implemented yet.");
-        LinkedIntList AB = new LinkedIntList();
-        ListNode back = AB.front;
+        LinkedIntList comb = new LinkedIntList();
+        ListNode back = comb.front;
         if (A.front != null) {
             ListNode curA = A.front;
-            AB.front = new ListNode(curA.data);
-            back = AB.front;
+            comb.front = new ListNode(curA.data);
+            back = comb.front;
             while (curA.next != null) {
                 curA = curA.next;
                 back.next = new ListNode(curA.data);
@@ -149,8 +146,8 @@ public class LinkedIntList {
         if (B.front != null) {
             ListNode curB = B.front;
             if (back == null) {
-                AB.front = new ListNode(curB.data);
-                back = AB.front;
+                comb.front = new ListNode(curB.data);
+                back = comb.front;
             } else {
                 back.next = new ListNode(curB.data);
                 back = back.next;
@@ -161,7 +158,7 @@ public class LinkedIntList {
                 back = back.next;
             }
         }
-        return AB;
+        return comb;
     }
 
     // You don't need to look at or understand the methods below this comment.
