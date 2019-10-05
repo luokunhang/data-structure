@@ -24,6 +24,7 @@ public class PalindromeTest {
     public void testIsPalindrome() {
         assertFalse(palindrome.isPalindrome("persiflage"));
         assertFalse(palindrome.isPalindrome("me"));
+        assertFalse(palindrome.isPalindrome("Wow"));
 
         assertTrue(palindrome.isPalindrome("lol"));
         assertTrue(palindrome.isPalindrome("redivider"));
