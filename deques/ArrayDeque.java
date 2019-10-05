@@ -7,7 +7,6 @@ public class ArrayDeque<T> implements Deque<T> {
     private int back;
     private int size;
 
-    @SuppressWarnings("unchecked")
     public ArrayDeque() {
         data = (T[]) new Object[8];
         front = 0;
@@ -106,7 +105,6 @@ public class ArrayDeque<T> implements Deque<T> {
         return size;
     }
 
-    @SuppressWarnings("unchecked")
     private void resize(int capacity) {
         T[] newData = (T[]) new Object[capacity];
         int i = increment(front, data.length);

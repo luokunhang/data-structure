@@ -2,9 +2,7 @@ package deques;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /** Performs some basic linked deque tests. */
 public class LinkedDequeTest {
@@ -37,5 +35,10 @@ public class LinkedDequeTest {
 
         lld.removeFirst();
         assertTrue(lld.isEmpty());
+
+        lld.addFirst(0);
+        lld.addFirst(1);
+        lld.addFirst(2);
+        assertEquals((int) lld.removeLast(), 0);
     }
 }

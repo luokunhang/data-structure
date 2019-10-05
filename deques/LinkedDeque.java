@@ -16,6 +16,7 @@ public class LinkedDeque<T> implements Deque<T> {
         sentinel.next = add;
         add.next = second;
         add.prev = sentinel;
+        second.prev = add;
     }
 
     public void addLast(T item) {
