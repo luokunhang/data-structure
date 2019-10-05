@@ -2,60 +2,76 @@ package deques;
 
 public class LinkedDeque<T> implements Deque<T> {
     private int size;
+    private Node sentinel;
 
     public LinkedDeque() {
-        // TODO: your code here
+        sentinel = new Node(null);
         size = 0;
-        throw new UnsupportedOperationException("Not implemented yet.");
-    }
-
-    private class Node {
-        private T value;
-        // TODO: your fields here
-
-        Node(T value) {
-            this.value = value;
-            // TODO: your code here
-            throw new UnsupportedOperationException("Not implemented yet.");
-        }
     }
 
     public void addFirst(T item) {
-        // TODO: your code here
         size += 1;
-        throw new UnsupportedOperationException("Not implemented yet.");
+        Node second = sentinel.next;
+        Node add = new Node(item);
+        sentinel.next = add;
+        add.next = second;
+        add.prev = sentinel;
     }
 
     public void addLast(T item) {
-        // TODO: your code here
         size += 1;
-        throw new UnsupportedOperationException("Not implemented yet.");
+        Node secLast = sentinel.prev;
+        Node add = new Node(item);
+        sentinel.prev = add;
+        add.next = sentinel;
+        add.prev = secLast;
+        secLast.next = add;
     }
 
     public T removeFirst() {
         if (size == 0) {
             return null;
         }
-        // TODO: your code here
         size -= 1;
-        throw new UnsupportedOperationException("Not implemented yet.");
+        T rmd = sentinel.next.value;
+        sentinel.next = sentinel.next.next;
+        sentinel.next.prev = sentinel;
+        return rmd;
     }
 
     public T removeLast() {
         if (size == 0) {
             return null;
         }
-        // TODO: your code here
         size -= 1;
-        throw new UnsupportedOperationException("Not implemented yet.");
+        T rmd = sentinel.prev.value;
+        sentinel.prev = sentinel.prev.prev;
+        sentinel.prev.next = sentinel;
+        return rmd;
     }
 
     public T get(int index) {
         if ((index > size) || (index < 0)) {
             return null;
         }
-        // TODO: your code here
-        throw new UnsupportedOperationException("Not implemented yet.");
+        Node curr = sentinel;
+        while (index >= 0) {
+            curr = curr.next;
+            index -= 1;
+        }
+        return curr.value;
+    }
+
+    private class Node {
+        private T value;
+        private Node next;
+        private Node prev;
+
+        Node(T value) {
+            this.value = value;
+            this.next = this;
+            this.prev = this;
+        }
     }
 
     public int size() {
