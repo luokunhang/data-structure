@@ -69,4 +69,76 @@ public class BinaryRangeSearchTest {
     }
 
     // Write more unit tests below.
+    @Test
+    public void testHardExample() {
+        Term[] moreTerms = new Term[] {
+                new Term("abc", 0),
+                new Term("automatic", 0),
+                new Term("autograph", 0),
+                new Term("auto", 0),
+                new Term("autocomplete", 0),
+                new Term("zebra", 0)
+        };
+        BinaryRangeSearch brs = new BinaryRangeSearch(moreTerms);
+        Term[] expected = new Term[]{
+                new Term("auto", 0),
+                new Term("autocomplete", 0),
+                new Term("autograph", 0),
+                new Term("automatic", 0)
+        };
+        assertTermsEqual(expected, brs.allMatches("auto"));
+    }
+
+    @Test
+    public void testFirstExample() {
+        Term[] moreTerms = new Term[] {
+                new Term("automatic", 0),
+                new Term("autograph", 0),
+                new Term("auto", 0),
+                new Term("autocomplete", 0),
+                new Term("zebra", 0)
+        };
+        BinaryRangeSearch brs = new BinaryRangeSearch(moreTerms);
+        Term[] expected = new Term[]{
+                new Term("auto", 0),
+                new Term("autocomplete", 0),
+                new Term("autograph", 0),
+                new Term("automatic", 0)
+        };
+        assertTermsEqual(expected, brs.allMatches("auto"));
+    }
+
+    @Test
+    public void testLastExample() {
+        Term[] moreTerms = new Term[] {
+                new Term("abc", 0),
+                new Term("automatic", 0),
+                new Term("autograph", 0),
+                new Term("auto", 0),
+                new Term("autocomplete", 0)
+        };
+        BinaryRangeSearch brs = new BinaryRangeSearch(moreTerms);
+        Term[] expected = new Term[]{
+                new Term("auto", 0),
+                new Term("autocomplete", 0),
+                new Term("autograph", 0),
+                new Term("automatic", 0)
+        };
+        assertTermsEqual(expected, brs.allMatches("auto"));
+    }
+
+    @Test
+    public void testNullExample() {
+        Term[] moreTerms = new Term[] {
+                new Term("abc", 0),
+                new Term("automatic", 0),
+                new Term("autograph", 0),
+                new Term("auto", 0),
+                new Term("autocomplete", 0),
+                new Term("zebra", 0)
+        };
+        BinaryRangeSearch brs = new BinaryRangeSearch(moreTerms);
+        Term[] expected = new Term[0];
+        assertTermsEqual(expected, brs.allMatches("qu"));
+    }
 }

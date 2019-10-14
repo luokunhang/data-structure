@@ -68,7 +68,7 @@ public class Term implements Comparable<Term> {
         if (r < 0) {
             throw new IllegalArgumentException("Length is negative.");
         }
-        if (r > query.length()) {
+        if (r >= query.length()) {
             return query;
         } else {
             return query.substring(0, r);

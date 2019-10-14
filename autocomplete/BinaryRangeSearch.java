@@ -32,22 +32,31 @@ public class BinaryRangeSearch implements Autocomplete {
         if (prefix == null) {
             throw new IllegalArgumentException("Your prefix is null.");
         }
+        Term[] toReturn;
         int first = binaryFirst(prefix, 0, store.length);
-        int last = binaryLast(prefix, 0, store.length);
-        Term[] toReturn = new Term[last - first + 1];
-        for (int i = 0; i < toReturn.length; i++) {
-            toReturn[i] = store[first + i];
+        if (first == -1) {
+            toReturn = new Term[0];
+        } else {
+            int last = binaryLast(prefix, 0, store.length);
+            toReturn = new Term[last - first + 1];
+            for (int i = 0; i < toReturn.length; i++) {
+                toReturn[i] = store[first + i];
+            }
+            Arrays.sort(toReturn, TermComparators.byReverseWeightOrder());
         }
-        Arrays.sort(toReturn, TermComparators.byReverseWeightOrder());
+
         return toReturn;
     }
 
     private int binaryFirst(String p, int s, int e) {
         int n = (s + e) / 2;
-        if (store[n].queryPrefix(p.length()).compareTo(p) == 0 && (n == 0 || store[n - 1].queryPrefix(p.length()).compareTo(p) < 0)) {
+        if (store[n].queryPrefix(p.length()).compareTo(p) == 0 &&
+                (n == 0 || store[n - 1].queryPrefix(p.length()).compareTo(p) < 0)) {
             return n;
-        } else if (store[n].queryPrefix(p.length()).compareTo(p) > 0) {
+        } else if (store[n].queryPrefix(p.length()).compareTo(p) >= 0) {
             return binaryFirst(p, s, n);
+        } else if (s == n) {
+                return -1;
         } else {
             return binaryFirst(p, n, e);
         }
@@ -55,12 +64,13 @@ public class BinaryRangeSearch implements Autocomplete {
 
     private int binaryLast(String p, int s, int e) {
         int n = (s + e) / 2;
-        if (store[n].queryPrefix(p.length()).compareTo(p) == 0 && (n == store.length || store[n + 1].queryPrefix(p.length()).compareTo(p) > 0)) {
+        if (store[n].queryPrefix(p.length()).compareTo(p) == 0 &&
+                (n == store.length - 1 || store[n + 1].queryPrefix(p.length()).compareTo(p) > 0)) {
             return n;
-        } else if (store[n].queryPrefix(p.length()).compareTo(p) > 0) {
-            return binaryLast(p, s, n);
-        } else {
+        } else if (store[n].queryPrefix(p.length()).compareTo(p) <= 0) {
             return binaryLast(p, n, e);
+        } else {
+            return binaryLast(p, s, n);
         }
     }
 }
