@@ -1,15 +1,18 @@
 package autocomplete;
 
 public class Term implements Comparable<Term> {
-    // TODO: add fields as necessary
-
+    private String query;
+    private long weight;
     /**
      * Initializes a term with the given query string and weight.
      * @throws IllegalArgumentException if query is null or weight is negative
      */
     public Term(String query, long weight) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (query == null || weight < 0) {
+            throw new IllegalArgumentException("Query is null or weight is negative!");
+        }
+        this.query = query;
+        this.weight = weight;
     }
 
     /**
@@ -17,14 +20,18 @@ public class Term implements Comparable<Term> {
      * @throws NullPointerException if the specified object is null
      */
     public int compareTo(Term that) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (that == null) {
+            throw new NullPointerException("Term passed is null!");
+        }
+        return this.query().compareTo(that.query());
     }
 
     /** Compares to another term, in descending order by weight. */
     public int compareToByReverseWeightOrder(Term that) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (that == null) {
+            throw new NullPointerException("Term passed is null!");
+        }
+        return (int) (that.weight() - this.weight());
     }
 
     /**
@@ -34,14 +41,22 @@ public class Term implements Comparable<Term> {
      * @throws IllegalArgumentException if r < 0
      */
     public int compareToByPrefixOrder(Term that, int r) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (that == null) {
+            throw new NullPointerException("Term passed is null!");
+        }
+        if (r < 0) {
+            throw new IllegalArgumentException("Length is negative.");
+        }
+        if (r > this.query().length() || r > that.query().length()) {
+            return compareTo(that);
+        } else {
+            return this.query().substring(0, r).compareTo(that.query().substring(0, r));
+        }
     }
 
     /** Returns this term's query. */
     public String query() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        return query;
     }
 
     /**
@@ -50,13 +65,18 @@ public class Term implements Comparable<Term> {
      * @throws IllegalArgumentException if r < 0
      */
     public String queryPrefix(int r) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (r < 0) {
+            throw new IllegalArgumentException("Length is negative.");
+        }
+        if (r > query.length()) {
+            return query;
+        } else {
+            return query.substring(0, r);
+        }
     }
 
     /** Returns this term's weight. */
     public long weight() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        return weight;
     }
 }
