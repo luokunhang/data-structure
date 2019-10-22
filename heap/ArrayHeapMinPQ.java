@@ -108,17 +108,22 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
                     items.get(n).getPriority() > items.get(n * 2 + 1).getPriority()) {
                 if (items.get(n * 2 + 1).getPriority() < items.get(n * 2).getPriority()) {
                     swap(n, n * 2 + 1);
+                    sink(n * 2 + 1);
                 } else {
                     swap(n, n * 2);
+                    sink(n * 2);
                 }
             } else if (items.get(n).getPriority() > items.get(n * 2).getPriority()) {
                 swap(n, n * 2);
+                sink(n * 2);
             } else if (items.get(n).getPriority() > items.get(n * 2 + 1).getPriority()) {
                 swap(n, n * 2 + 1);
+                sink(n * 2 + 1);
             }
         } else if (n * 2 <= size()) {
             if (items.get(n).getPriority() > items.get(n * 2).getPriority()) {
                 swap(n, n * 2);
+                sink(n * 2);
             }
         }
     }

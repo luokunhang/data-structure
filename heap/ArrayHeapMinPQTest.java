@@ -20,7 +20,7 @@ public class ArrayHeapMinPQTest {
         // Create a new LinkedDeque (testing implementation)
         ExtrinsicMinPQ<Integer> testingPQ = new ArrayHeapMinPQ<>();
 
-        int ite = 5;
+        int ite = 50000;
         // Add 1000000 random integers to both the expectedDeque and testingDeque implementations
         for (int i = 0; i < ite; i += 1) {
             double p = random.nextDouble();
