@@ -25,7 +25,7 @@ public class KDTreePointSet implements PointSet {
      */
     public KDTreePointSet(List<Point> points) {
         for (int i = 0; i < points.size(); i++) {
-            root = insert(root, points.get(0), true);
+            root = insert(root, new Point(points.get(i).x(), points.get(i).y()), true);
         }
     }
 
@@ -77,7 +77,7 @@ public class KDTreePointSet implements PointSet {
                 bad = node.less;
                 good = node.more;
             }
-            if (y == node.point.y()) {
+            if (y != node.point.y()) {
                 checkBad = true;
             }
         } else {
@@ -88,7 +88,7 @@ public class KDTreePointSet implements PointSet {
                 bad = node.less;
                 good = node.more;
             }
-            if (x == node.point.x()) {
+            if (x != node.point.x()) {
                 checkBad = true;
             }
         }

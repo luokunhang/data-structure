@@ -1,31 +1,33 @@
 package kdtree;
 
 import org.junit.Test;
-import java.util.*;
+import java.util.List;
+import java.util.Random;
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 public class KDTreePointSetTest {
     @Test
     public void testInserting() {
-        int seed = 42;
+        int seed = 373;
         Random random = new Random(seed);
 
         List<Point> points = new ArrayList();
-        int ite = 100000;
-        for (int i = 0; i < 5; i++) {
+        int ite = 10000;
+        for (int i = 0; i < ite; i++) {
             Point curr = new Point(random.nextDouble(), random.nextDouble());
             points.add(curr);
         }
         PointSet naiveSet = new NaivePointSet(points);
-        PointSet KDSet = new KDTreePointSet(points);
+        PointSet kdSet = new KDTreePointSet(points);
 
-        for(int i = 0; i < ite; i++) {
+        for (int i = 0; i < ite; i++) {
             double x = random.nextDouble();
             double y = random.nextDouble();
             Point naiveFind = naiveSet.nearest(x, y);
-            Point KDFind = KDSet.nearest(x, y);
-            if (!naiveFind.equals(KDFind)) {
-                System.out.println("Error occurs at " + i);
-            }
+            Point kdFind = kdSet.nearest(x, y);
+            assertTrue("Error occurs at " + i, naiveFind.equals(kdFind));
         }
     }
 }

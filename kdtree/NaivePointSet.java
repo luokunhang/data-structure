@@ -18,7 +18,7 @@ public class NaivePointSet implements PointSet {
     public NaivePointSet(List<Point> points) {
         point = new ArrayList();
         for (int i = 0; i < points.size(); i++) {
-            point.add(points.get(i));
+            point.add(new Point(points.get(i).x(), points.get(i).y()));
         }
     }
 
@@ -29,7 +29,7 @@ public class NaivePointSet implements PointSet {
     @Override
     public Point nearest(double x, double y) {
         int nearest = 0;
-        double distance = -1.0;
+        double distance = point.get(0).distanceSquaredTo(x, y);
         for (int i = 1; i < point.size(); i++) {
             double thisDist = point.get(i).distanceSquaredTo(x, y);
             if (thisDist < distance) {
