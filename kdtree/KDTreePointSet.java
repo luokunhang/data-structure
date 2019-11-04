@@ -3,8 +3,9 @@ package kdtree;
 import java.util.List;
 
 public class KDTreePointSet implements PointSet {
-
     private PointNode root;
+    private double gx;
+    private double gy;
 
     private static class PointNode {
         Point point;
@@ -13,7 +14,8 @@ public class KDTreePointSet implements PointSet {
 
         PointNode(Point point) {
             this.point = point;
-            this.less = this.more = null;
+            this.less = null;
+            this.more = null;
         }
     }
 
@@ -29,25 +31,25 @@ public class KDTreePointSet implements PointSet {
         }
     }
 
-    private PointNode insert(PointNode root, Point toInsert, boolean compareX) {
-        if (root == null) {
-            root = new PointNode(toInsert);
-            return root;
+    private PointNode insert(PointNode node, Point toInsert, boolean compareX) {
+        if (node == null) {
+            node = new PointNode(toInsert);
+            return node;
         }
         if (compareX) {
-            if (toInsert.x() <= root.point.x()) {
-                root.less = insert(root.less, toInsert, false);
+            if (toInsert.x() <= node.point.x()) {
+                node.less = insert(node.less, toInsert, false);
             } else {
-                root.more = insert(root.more, toInsert, false);
+                node.more = insert(node.more, toInsert, false);
             }
         } else {
-            if (toInsert.y() <= root.point.y()) {
-                root.less = insert(root.less, toInsert, true);
+            if (toInsert.y() <= node.point.y()) {
+                node.less = insert(node.less, toInsert, true);
             } else {
-                root.more = insert(root.more, toInsert, true);
+                node.more = insert(node.more, toInsert, true);
             }
         }
-        return root;
+        return node;
     }
 
     /**
@@ -56,45 +58,45 @@ public class KDTreePointSet implements PointSet {
      */
     @Override
     public Point nearest(double x, double y) {
-        return nearest(root, root.point, x, y, true);
+        this.gx = x;
+        this.gy = y;
+        return nearest(root, root.point, true);
     }
 
-    private Point nearest(PointNode node, Point best, double x, double y, boolean compareX) {
+    private Point nearest(PointNode node, Point best, boolean compareX) {
         if (node == null) {
             return best;
         }
-        if (node.point.distanceSquaredTo(x, y) < best.distanceSquaredTo(x, y)) {
+        if (node.point.distanceSquaredTo(gx, gy) < best.distanceSquaredTo(gx, gy)) {
             best = node.point;
         }
         PointNode good;
         PointNode bad;
-        boolean checkBad = false;
         if (compareX) {
-            if (x <= node.point.x()) {
+            if (gx <= node.point.x()) {
                 good = node.less;
                 bad = node.more;
             } else {
                 bad = node.less;
                 good = node.more;
             }
-            if (y != node.point.y()) {
-                checkBad = true;
+            best = nearest(good, best, false);
+            if (best.distanceSquaredTo(gx, gy) > Math.pow(gx - node.point.x(), 2)) {
+                best = nearest(bad, best, false);
             }
         } else {
-            if (y <= node.point.y()) {
+            if (gy <= node.point.y()) {
                 good = node.less;
                 bad = node.more;
+
             } else {
                 bad = node.less;
                 good = node.more;
             }
-            if (x != node.point.x()) {
-                checkBad = true;
+            best = nearest(good, best, true);
+            if (best.distanceSquaredTo(gx, gy) > Math.pow(gy - node.point.y(), 2)) {
+                best = nearest(bad, best, true);
             }
-        }
-        best = nearest(good, best, x, y, !compareX);
-        if (checkBad) {
-            best = nearest(bad, best, x, y, !compareX);
         }
         return best;
     }

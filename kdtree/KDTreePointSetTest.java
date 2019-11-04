@@ -14,8 +14,8 @@ public class KDTreePointSetTest {
         Random random = new Random(seed);
 
         List<Point> points = new ArrayList();
-        int ite = 10000;
-        for (int i = 0; i < ite; i++) {
+        int ite = 5000;
+        for (int i = 0; i < 100000; i++) {
             Point curr = new Point(random.nextDouble(), random.nextDouble());
             points.add(curr);
         }
