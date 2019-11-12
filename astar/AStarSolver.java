@@ -48,6 +48,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                 solutionWeight = distTo.get(current);
                 outcome = SolverOutcome.SOLVED;
                 timeSpent = sw.elapsedTime();
+                return;
             }
 
             List<WeightedEdge<Vertex>> children = input.neighbors(current);
@@ -60,11 +61,13 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                     edgeTo.put(w, current);
                     if (!fringe.contains(w)) {
                         fringe.add(w, distTo.get(w) + input.estimatedDistanceToGoal(w, end));
+                    } else {
+                        fringe.changePriority(w, distTo.get(w) + input.estimatedDistanceToGoal(w, end));
                     }
                 }
             }
 
-            if (sw.elapsedTime() > 300) {
+            if (sw.elapsedTime() > 3000) {
                 outcome = SolverOutcome.UNSOLVABLE;
                 return;
             }
