@@ -68,10 +68,11 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
             }
 
             if (sw.elapsedTime() > timeout) {
-                outcome = SolverOutcome.UNSOLVABLE;
+                outcome = SolverOutcome.TIMEOUT;
                 return;
             }
         }
+        outcome = SolverOutcome.UNSOLVABLE;
     }
 
     private List<Vertex> path(Vertex end) {
