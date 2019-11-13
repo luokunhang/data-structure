@@ -34,7 +34,6 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
 
         ExtrinsicMinPQ<Vertex> fringe = new ArrayHeapMinPQ<>();
         fringe.add(start, input.estimatedDistanceToGoal(start, end));
-
         distTo = new HashMap<>();
         edgeTo = new HashMap<>();
         distTo.put(start, 0.0);
