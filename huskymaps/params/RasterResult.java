@@ -10,7 +10,10 @@ public class RasterResult {
     /** The 2-dimensional string grid of map tilenames. */
     public final Rasterer.Tile[][] grid;
     /** The bounding upper-left, lower-right latitudes and longitudes of the final image. */
-    public final double ullat, ullon, lrlat, lrlon;
+    public final double ullat;
+    public final double ullon;
+    public final double lrlat;
+    public final double lrlon;
 
     /** Return a new RasterResult with the given grid. */
     public RasterResult(Rasterer.Tile[][] grid) {
@@ -33,8 +36,12 @@ public class RasterResult {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         RasterResult that = (RasterResult) o;
         return Arrays.deepEquals(grid, that.grid);
     }
