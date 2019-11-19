@@ -105,5 +105,5 @@ public class Constants {
     public static final boolean HEROKU_DEPLOYMENT = false;
 
     /** Default port for serving the application locally. */
-    public static final int PORT = 8080;
+    public static final int PORT = 8070;
 }

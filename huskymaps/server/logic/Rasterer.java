@@ -5,9 +5,15 @@ import huskymaps.params.RasterResult;
 
 import java.util.Objects;
 
+import static huskymaps.utils.Constants.LAT_PER_TILE;
+import static huskymaps.utils.Constants.LON_PER_TILE;
 import static huskymaps.utils.Constants.MIN_X_TILE_AT_DEPTH;
 import static huskymaps.utils.Constants.MIN_Y_TILE_AT_DEPTH;
 import static huskymaps.utils.Constants.MIN_ZOOM_LEVEL;
+import static huskymaps.utils.Constants.ROOT_LRLAT;
+import static huskymaps.utils.Constants.ROOT_LRLON;
+import static huskymaps.utils.Constants.ROOT_ULLAT;
+import static huskymaps.utils.Constants.ROOT_ULLON;
 
 /** Application logic for the RasterAPIHandler. */
 public class Rasterer {
@@ -31,9 +37,33 @@ public class Rasterer {
      * @return RasterResult
      */
     public static RasterResult rasterizeMap(RasterRequest request) {
-        System.out.println("Since you haven't implemented rasterizeMap, nothing is displayed in your browser.");
-        // TODO
-        Tile[][] grid = null;
+        double ullat = request.ullat;
+        double ullon = request.ullon;
+        double lrlat = request.lrlat;
+        double lrlon = request.lrlon;
+        if (ullat > ROOT_ULLAT) {
+            ullat = ROOT_ULLAT;
+        }
+        if (ullon < ROOT_ULLON) {
+            ullon = ROOT_ULLON;
+        }
+        if (lrlat < ROOT_LRLAT) {
+            lrlat = ROOT_LRLAT;
+        }
+        if (lrlon > ROOT_LRLON) {
+            lrlon = ROOT_LRLON;
+        }
+        int uly = (int) ((ROOT_ULLAT - ullat) / LAT_PER_TILE[request.depth]);
+        int ulx = (int) ((ullon - ROOT_ULLON) / LON_PER_TILE[request.depth]);
+        int lry = (int) ((ROOT_ULLAT - lrlat) / LAT_PER_TILE[request.depth]);
+        int lrx = (int) ((lrlon - ROOT_ULLON) / LON_PER_TILE[request.depth]);
+
+        Tile[][] grid = new Tile[lry - uly + 1][lrx - ulx + 1];
+        for (int i = ulx; i <= lrx; i++) {
+            for (int j = uly; j <= lry; j++) {
+                grid[j - uly][i - ulx] = new Tile(request.depth, i, j);
+            }
+        }
         return new RasterResult(grid);
     }
 

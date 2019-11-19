@@ -2,11 +2,15 @@ package huskymaps;
 
 import astar.AStarGraph;
 import astar.WeightedEdge;
+import autocomplete.Autocomplete;
+import autocomplete.BinaryRangeSearch;
+import autocomplete.Term;
+import kdtree.KDTreePointSet;
+import kdtree.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,10 +22,17 @@ import static huskymaps.utils.Spatial.projectToY;
 public class StreetMapGraph implements AStarGraph<Long> {
     private Map<Long, Node> nodes = new HashMap<>();
     private Map<Long, Set<WeightedEdge<Long>>> neighbors = new HashMap<>();
+    private Map<String, Set<Node>> names;
 
     public StreetMapGraph(String filename) {
         OSMGraphHandler.initializeFromXML(this, filename);
-        // TODO
+        names = new HashMap<>();
+        for (long id: nodes.keySet()) {
+            if (!names.keySet().contains(nodes.get(id).name())) {
+                names.put(nodes.get(id).name(), new HashSet<>());
+            }
+            names.get(nodes.get(id).name()).add(nodes.get(id));
+        }
     }
 
     /**
@@ -34,7 +45,20 @@ public class StreetMapGraph implements AStarGraph<Long> {
         double x = projectToX(lon, lat);
         double y = projectToY(lon, lat);
         // Use x and y, not lon and lat, when working with Point instances
-        return 0;
+        List<Point> toInsert = new ArrayList<>();
+        Map<Point, Long> find = new HashMap<>();
+        for (Long id: nodes.keySet()) {
+            if (isNavigable(nodes.get(id))) {
+                double nodex = projectToX(nodes.get(id).lon(), nodes.get(id).lat());
+                double nodey = projectToY(nodes.get(id).lon(), nodes.get(id).lat());
+                Point curr = new Point(nodex, nodey);
+                toInsert.add(curr);
+                find.put(curr, id);
+            }
+        }
+        KDTreePointSet kdTree = new KDTreePointSet(toInsert);
+        Point nearest = kdTree.nearest(x, y);
+        return find.get(nearest);
     }
 
     /**
@@ -44,7 +68,20 @@ public class StreetMapGraph implements AStarGraph<Long> {
      * @return A <code>List</code> of full names of locations matching the <code>prefix</code>.
      */
     public List<String> getLocationsByPrefix(String prefix) {
-        return new LinkedList<>();
+        List<Term> toArray = new ArrayList<>();
+        for (long id: nodes.keySet()) {
+            if (nodes.get(id).name() != null) {
+                toArray.add(new Term(nodes.get(id).name(), id));
+            }
+        }
+        Term[] toInsert = (Term[]) toArray.toArray();
+        Autocomplete auto = new BinaryRangeSearch(toInsert);
+        Term[] result = auto.allMatches(prefix);
+        List<String> toReturn = new ArrayList<>();
+        for (int i = 0; i < result.length; i++) {
+            toReturn.add(result[i].query());
+        }
+        return toReturn;
     }
 
     /**
@@ -54,7 +91,12 @@ public class StreetMapGraph implements AStarGraph<Long> {
      * @return A list of locations whose name matches the <code>locationName</code>.
      */
     public List<Node> getLocations(String locationName) {
-        return new LinkedList<>();
+        Set<Node> toList = names.get(locationName);
+        List<Node> toReturn = new ArrayList<>();
+        for (Node node: toList) {
+            toList.add(node);
+        }
+        return toReturn;
     }
 
     /** Returns a list of outgoing edges for V. Assumes V exists in this graph. */
